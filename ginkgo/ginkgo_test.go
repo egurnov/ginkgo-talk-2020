@@ -2,7 +2,7 @@ package ginkgo_test
 
 import (
 	"errors"
-	"fmt"
+	"log"
 	"time"
 
 	"github.com/onsi/gomega/types"
@@ -15,40 +15,40 @@ var _ = Describe("Ginkgo", func() {
 
 	Context("Setup and Teardown", func() { // same as Describe
 		BeforeEach(func() {
-			fmt.Println("BeforeEach 1")
+			log.Println("BeforeEach 1")
 		})
 
 		JustBeforeEach(func() {
-			fmt.Println("JustBeforeEach 1")
+			log.Println("JustBeforeEach 1")
 		})
 
 		AfterEach(func() {
-			fmt.Println("AfterEach 1")
+			log.Println("AfterEach 1")
 		})
 
 		JustAfterEach(func() {
-			fmt.Println("JustAfterEach 1")
+			log.Println("JustAfterEach 1")
 		})
 
 		Context("Inner context", func() {
 			BeforeEach(func() {
-				fmt.Println("BeforeEach 2")
+				log.Println("BeforeEach 2")
 			})
 
 			JustBeforeEach(func() {
-				fmt.Println("JustBeforeEach 2")
+				log.Println("JustBeforeEach 2")
 			})
 
 			AfterEach(func() {
-				fmt.Println("AfterEach 2")
+				log.Println("AfterEach 2")
 			})
 
 			JustAfterEach(func() {
-				fmt.Println("JustAfterEach 2")
+				log.Println("JustAfterEach 2")
 			})
 
 			It("works", func() {
-				fmt.Println("It")
+				log.Println("It")
 			})
 		})
 	})
@@ -225,8 +225,44 @@ var _ = Describe("Ginkgo", func() {
 				),
 			)
 			Expect(5).To(Not(BeNil())) // Can also negate a single matcher
+		})
 
-			// TODO: (ae) eventually, consistently
+		Context("can make async assertions", func() {
+			startSlowProcess := func(d time.Duration) func() bool {
+				start := time.Now()
+				return func() bool {
+					log.Println("Running... ", time.Since(start))
+					return time.Now().After(start.Add(d))
+				}
+			}
+
+			It("eventually", func() {
+				Eventually(startSlowProcess(500 * time.Millisecond)).Should(BeTrue())
+				// Eventually(startSlowProcess(3 * time.Second)).Should(BeTrue()) // Will fail
+				Eventually(
+					startSlowProcess(3*time.Second),
+					5*time.Second,
+					500*time.Millisecond,
+				).Should(BeTrue())
+			})
+
+			It("consistently", func() {
+				Consistently(startSlowProcess(3 * time.Second)).Should(BeFalse())
+				// Consistently(
+				// 	startSlowProcess(3*time.Second),
+				// 	5*time.Second,
+				// 	500*time.Millisecond,
+				// ).Should(BeFalse()) // Will fail
+			})
+
+			It("works nice with channels", func() {
+				ch := make(chan struct{})
+				time.AfterFunc(800*time.Millisecond, func() {
+					ch <- struct{}{}
+				})
+
+				Eventually(ch).Should(Receive())
+			})
 		})
 
 		Context("Kung Fu zone", func() {
