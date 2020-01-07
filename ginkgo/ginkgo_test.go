@@ -3,6 +3,7 @@ package ginkgo_test
 import (
 	"errors"
 	"log"
+	"strconv"
 	"time"
 
 	"github.com/onsi/gomega/types"
@@ -14,24 +15,28 @@ import (
 var _ = Describe("Ginkgo", func() {
 
 	Context("Setup and Teardown", func() { // same as Describe
-		BeforeEach(func() {
+		BeforeEach(func() { // creation
 			log.Println("BeforeEach 1")
 		})
 
-		JustBeforeEach(func() {
+		JustBeforeEach(func() { // configuration
 			log.Println("JustBeforeEach 1")
 		})
 
-		AfterEach(func() {
-			log.Println("AfterEach 1")
-		})
-
-		JustAfterEach(func() {
+		JustAfterEach(func() { // diagnostic
 			log.Println("JustAfterEach 1")
 		})
 
+		AfterEach(func() { // teardown
+			log.Println("AfterEach 1")
+		})
+
+		It("outer context it", func() {
+			log.Println("It 1")
+		})
+
 		Context("Inner context", func() {
-			BeforeEach(func() {
+			BeforeEach(func() { // can override creation, but reuse configuration
 				log.Println("BeforeEach 2")
 			})
 
@@ -39,16 +44,16 @@ var _ = Describe("Ginkgo", func() {
 				log.Println("JustBeforeEach 2")
 			})
 
-			AfterEach(func() {
-				log.Println("AfterEach 2")
-			})
-
 			JustAfterEach(func() {
 				log.Println("JustAfterEach 2")
 			})
 
+			AfterEach(func() {
+				log.Println("AfterEach 2")
+			})
+
 			It("works", func() {
-				log.Println("It")
+				log.Println("It 2")
 			})
 		})
 	})
@@ -77,7 +82,14 @@ var _ = Describe("Ginkgo", func() {
 		}, 3)
 	})
 
-	// TODO: (ae) tests in a loop, talkative test
+	Context("generating tests", func() {
+		for i := 0; i < 10; i++ {
+			i := i // create a local copy of the loop variable
+			Specify("test #"+strconv.Itoa(i), func() {
+				log.Println("Running test #", i)
+			})
+		}
+	})
 
 	Describe("Gomega matchers", func() {
 
@@ -86,6 +98,12 @@ var _ = Describe("Ginkgo", func() {
 			Expect(5).NotTo(Equal(3)) // Also with negations
 			Expect(5).ToNot(Equal(3)) //
 			Ω(5).Should(Equal(5))     // Another notation
+		})
+
+		It("allows annotations", func() {
+			Expect(5).To(Equal(5), "Basic math should work as expected")
+			Expect(5).To(Equal(5), "Also formatted")
+			Expect(5).To(Equal(5), func() string { return "Even dynamic" })
 		})
 
 		It("can handle errors", func() {
@@ -114,12 +132,6 @@ var _ = Describe("Ginkgo", func() {
 			Expect(func() { panic("Nooooooooo!") }).To(Panic())
 		})
 
-		It("allows annotations", func() {
-			Expect(5).To(Equal(5), "Basic math should work as expected")
-			Expect(5).To(Equal(5), "Also formatted")
-			Expect(5).To(Equal(5), func() string { return "Even dynamic" })
-		})
-
 		It("has multiple ways to assert equivalence", func() {
 			Expect(5).To(Equal(5)) // uses reflect.DeepEqual
 			Expect(map[string]int{"a": 1, "b": 2}).
@@ -138,7 +150,7 @@ var _ = Describe("Ginkgo", func() {
 				Two
 			)
 
-			Expect(Zero).To(BeEquivalentTo(0)) // Performs type casting
+			Expect(Zero).To(BeEquivalentTo(0)) // Convert ACTUAL’s type to that of EXPECTED
 			Expect(Zero).ToNot(Equal(0))
 			Expect(5.1).To(BeEquivalentTo(5)) // Type casting gotcha
 			Expect(5).ToNot(BeEquivalentTo(5.1))
@@ -151,7 +163,7 @@ var _ = Describe("Ginkgo", func() {
 
 			p1 := &struct{ v int }{v: 5}
 			p2 := p1
-			Expect(p1).To(BeIdenticalTo(p2))
+			Expect(p1).To(BeIdenticalTo(p2)) // point to the exact same location in memory
 			Expect(p1).ToNot(BeIdenticalTo(&struct{ v int }{v: 5}))
 			Expect(p1).ToNot(BeIdenticalTo(struct{ v int }{v: 5}))
 		})
@@ -209,6 +221,7 @@ var _ = Describe("Ginkgo", func() {
 			shoppingList := map[string]int{"apples": 4, "tomatoes": 10, "milk": 1}
 			Expect(shoppingList).To(HaveKey("apples"))
 			Expect(shoppingList).To(HaveKeyWithValue("tomatoes", 10))
+			Expect(shoppingList).To(ConsistOf(1, 4, 10)) // match against values
 		})
 
 		It("can combine matchers", func() {
@@ -312,8 +325,6 @@ var _ = Describe("Ginkgo", func() {
 
 				Expect(5).To(BeInRange(3, 6))
 			})
-
-			// TODO: (ae) with great power comes great responsibility: don't make your test unreadable
 		})
 	})
 })

@@ -18,5 +18,10 @@ func TestGinkgoTalk(t *testing.T) {
 	RunSpecs(t, "GinkgoTalk Suite")
 }
 
-// TODO: (ae) before suite, after suite
-// TODO: (ae) Readme
+var _ = BeforeSuite(func() {
+	log.Println("Before Suite")
+})
+
+var _ = AfterSuite(func() {
+	log.Println("After Suite")
+})
