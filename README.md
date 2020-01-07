@@ -23,6 +23,10 @@ testing framework and it's accompanying assertion library [Gomega](http://onsi.g
     * Async assertions
     * Transformations and custom matchers
 * Ginkgo
+    * Connecting Gomega
+    * Setup and teardown
+    * Async functions
+    * Measurements
     * CLI
         * `ginkgo bootstrap` and `ginkgo generate`
         * `go test` interoperability
@@ -32,10 +36,6 @@ testing framework and it's accompanying assertion library [Gomega](http://onsi.g
         * `--flakeAttempts=ATTEMPTS`
         * `-untilItFails`
         * `ginkgo watch -notify -r`
-    * Connecting Gomega
-    * `ginkgo blur/unfocus`
-    * Setup and teardown
-    * Async functions
-    * Measurements  
+        * `ginkgo blur/unfocus`
 * General advice
-    * Keeping test readable 
+    * Keep tests readable 
