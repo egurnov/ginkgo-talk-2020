@@ -1,7 +1,7 @@
 # Ginkgo & Gomega Talk 2020
 
 ## About the author
-I'm Alexander Egurnov, Senior Software Developer at PubNative GmbH. 
+I'm Alexander Egurnov, Senior Software Engineer at PubNative. 
 I've been coding in Go since March 2015.
 
 ## About this repo

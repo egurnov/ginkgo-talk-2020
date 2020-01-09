@@ -1,0 +1,17 @@
+Ginkgo and Gomega
+
+Alexander Egurnov
+Senior Software Engineer, PubNative
+alexander.egurnov@pubnative.net
+
+* Ginkgo
+
+.link http://onsi.github.io/ginkgo
+
+A Golang BDD Testing Framework
+
+* Gomega
+
+.link http://onsi.github.io/gomega
+
+Ginkgo's Preferred Matcher Library
