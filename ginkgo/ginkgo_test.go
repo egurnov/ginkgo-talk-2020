@@ -52,7 +52,7 @@ var _ = Describe("Ginkgo", func() {
 				log.Println("AfterEach 2")
 			})
 
-			It("works", func() {
+			Specify("works", func() {
 				log.Println("It 2")
 			})
 		})
@@ -63,23 +63,34 @@ var _ = Describe("Ginkgo", func() {
 	})
 
 	Context("Asynchronous functions", func() {
-		It("can handle async functions", func(done Done) {
-			go func() {
-				defer GinkgoRecover()
+		XContext("in a bad case", func() {
+			It("fails in a goroutine", func() {
+				go func() {
+					defer GinkgoRecover()
+					time.Sleep(1 * time.Second)
+					Fail("Oh noes!")
+				}()
+			})
 
+			It("doesn't do anything bad", func() {
 				time.Sleep(3 * time.Second)
-				close(done)
-			}()
-		}, 5)
+			})
+		})
 
-		XIt("can handle async function failures", func(done Done) {
-			go func() {
-				defer GinkgoRecover()
+		XWhen("done properly", func() {
+			It("fails in a goroutine", func(done Done) {
+				go func() {
+					defer GinkgoRecover()
+					time.Sleep(1 * time.Second)
+					Fail("Oh noes!")
+					close(done)
+				}()
+			}, 5) // timeout in seconds
 
-				Fail("You shall not pass!")
-				close(done)
-			}()
-		}, 3)
+			It("doesn't do anything bad", func() {
+				time.Sleep(3 * time.Second)
+			})
+		})
 	})
 
 	Context("generating tests", func() {
@@ -97,12 +108,12 @@ var _ = Describe("Ginkgo", func() {
 			Expect(5).To(Equal(5))    // Deep equality, strict about types
 			Expect(5).NotTo(Equal(3)) // Also with negations
 			Expect(5).ToNot(Equal(3)) //
-			Ω(5).Should(Equal(5))     // Another notation
+			Ω(5).Should(Equal(5))     // Another notation, Ω = Option + Z on MacOS
 		})
 
 		It("allows annotations", func() {
 			Expect(5).To(Equal(5), "Basic math should work as expected")
-			Expect(5).To(Equal(5), "Also formatted")
+			Expect(5).To(Equal(5), "Also formatted: Hello, %s!", "World")
 			Expect(5).To(Equal(5), func() string { return "Even dynamic" })
 		})
 
@@ -124,12 +135,15 @@ var _ = Describe("Ginkgo", func() {
 			Expect(winner()).To(Succeed())
 
 			err = errors.New("oops")
-			Expect(err).To(MatchError("oops"))
+			Expect(err).To(MatchError(errors.New("oops"))) // reflect.DeepEqual()
+			Expect(err).To(MatchError("oops"))             // Matches ACTUAL.Error()
 			Expect(err).To(MatchError(ContainSubstring("oo")))
 		})
 
 		It("can handle panics", func() {
-			Expect(func() { panic("Nooooooooo!") }).To(Panic())
+			Expect(func() {
+				panic("Nooooooooo!")
+			}).To(Panic())
 		})
 
 		It("has multiple ways to assert equivalence", func() {
@@ -154,6 +168,7 @@ var _ = Describe("Ginkgo", func() {
 			Expect(Zero).ToNot(Equal(0))
 			Expect(5.1).To(BeEquivalentTo(5)) // Type casting gotcha
 			Expect(5).ToNot(BeEquivalentTo(5.1))
+
 			type AlmostTheSame struct {
 				i int
 				d float64
@@ -183,7 +198,7 @@ var _ = Describe("Ginkgo", func() {
 			Expect("").To(BeZero())
 
 			By("Booleans")
-			Expect(true).To(BeTrue())
+			Expect(true).To(BeTrue()) // Only for bool
 			Expect(false).To(BeFalse())
 
 			By("Strings")
@@ -191,7 +206,7 @@ var _ = Describe("Ginkgo", func() {
 			Expect("Abracadabra").To(ContainSubstring("cad"))
 			Expect("x-y=z").To(ContainSubstring("%v-%v", "x", "y"))
 			Expect("address@example.com").To(MatchRegexp("[a-z]+@[a-z]+\\.[a-z]{2,}"))
-			Expect("{\"a\": 1, \"b\": 2}").To(MatchJSON("{\"b\": 2, \"a\": 1}")) // Also XML and YAML
+			Expect("{\"a\": 1, \"b\": 2}").To(MatchJSON("{\"b\": 2, \"a\": 1}")) // Similar XML and YAML
 
 			By("Channels")
 			ch := make(chan int, 1)

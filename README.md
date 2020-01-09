@@ -9,6 +9,25 @@ This is an introduction and a live demo of my favorite features of [Ginkgo](http
 testing framework and it's accompanying assertion library [Gomega](http://onsi.github.io/gomega/).
 
 ### Talking points
+
+* Ginkgo
+    * Connecting Gomega
+    * Context/Describe/When, It/Specify, By
+    * Focus, Skip, Pending
+    * Setup and teardown
+    * Async functions
+    * Measurements
+    * CLI
+        * `ginkgo bootstrap` and `ginkgo generate`
+        * `go test` interoperability
+        * `GinkgoWriter` and `-v` option
+        * `ginkgo -p`
+        * `ginkgo -r`
+        * `--skipMeasurements`
+        * `--flakeAttempts=ATTEMPTS`
+        * `-untilItFails`
+        * `ginkgo watch -notify -r --skipMeasurements`
+        * `ginkgo blur/unfocus`
 * Gomega
     * Standalone
     * `Expect` and `Ω` notations
@@ -22,20 +41,5 @@ testing framework and it's accompanying assertion library [Gomega](http://onsi.g
     * Combining matchers
     * Async assertions
     * Transformations and custom matchers
-* Ginkgo
-    * Connecting Gomega
-    * Setup and teardown
-    * Async functions
-    * Measurements
-    * CLI
-        * `ginkgo bootstrap` and `ginkgo generate`
-        * `go test` interoperability
-        * `GinkgoWriter` and `-v` option
-        * `ginkgo -p`
-        * `ginkgo -r`
-        * `--flakeAttempts=ATTEMPTS`
-        * `-untilItFails`
-        * `ginkgo watch -notify -r`
-        * `ginkgo blur/unfocus`
 * General advice
-    * Keep tests readable 
+    * Keep tests readable
