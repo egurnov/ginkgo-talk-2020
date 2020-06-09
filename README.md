@@ -1,7 +1,7 @@
 # Ginkgo & Gomega Talk 2020
 
 ## About the author
-I'm Alexander Egurnov, Senior Software Engineer at PubNative. 
+I'm Alexander Egurnov, Senior Software Engineer at PubNative.
 I've been coding in Go since March 2015.
 
 ## About this repo
@@ -10,7 +10,22 @@ testing framework and it's accompanying assertion library [Gomega](http://onsi.g
 
 ### Talking points
 
+* Gomega
+    * Standalone
+    * `Expect` and `Ω` notations
+    * Annotations
+    * Matchers
+        * Error checking and panics
+        * Equivalence
+        * Numbers
+        * Other types
+        * Collections
+    * Async assertions
+    * Combining matchers
+    * Transformations
+    * Custom matchers
 * Ginkgo
+    * Connecting to testing package
     * Connecting Gomega
     * Context/Describe/When, It/Specify, By
     * Focus, Skip, Pending
@@ -23,23 +38,10 @@ testing framework and it's accompanying assertion library [Gomega](http://onsi.g
         * `GinkgoWriter` and `-v` option
         * `ginkgo -p`
         * `ginkgo -r`
-        * `--skipMeasurements`
-        * `--flakeAttempts=ATTEMPTS`
+        * `-skipMeasurements`
+        * `-flakeAttempts=ATTEMPTS`
         * `-untilItFails`
-        * `ginkgo watch -notify -r --skipMeasurements`
+        * `ginkgo watch -notify -r -skipMeasurements`
         * `ginkgo blur/unfocus`
-* Gomega
-    * Standalone
-    * `Expect` and `Ω` notations
-    * Annotations
-    * Matchers
-        * Error checking and panics
-        * Equivalence
-        * Numbers
-        * Other types
-        * Collections
-    * Combining matchers
-    * Async assertions
-    * Transformations and custom matchers
 * General advice
     * Keep tests readable
