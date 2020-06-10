@@ -9,6 +9,8 @@ import (
 	. "github.com/onsi/gomega"
 )
 
+// ginkgo -focus Measurements ./ginkgo
+
 var _ = Describe("Measurements", func() {
 	const N = 100
 

@@ -8,7 +8,11 @@ import (
 	. "github.com/onsi/gomega"
 )
 
+// ginkgo -skipMeasurements -r
+// go test -count=1 ./...
+
 func TestGinkgoTalk(t *testing.T) {
+	// ginkgo -skipMeasurements -v ./ginkgo
 	log.SetOutput(GinkgoWriter)
 
 	RegisterFailHandler(Fail)

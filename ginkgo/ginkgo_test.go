@@ -10,6 +10,8 @@ import (
 	. "github.com/onsi/gomega"
 )
 
+// ginkgo watch -notify -r -skipMeasurements
+
 var _ = Describe("Ginkgo", func() {
 
 	Describe("test", func() {
@@ -47,6 +49,8 @@ var _ = Describe("Ginkgo", func() {
 		By("Step 4")
 		Expect(profit).ToNot(BeNil())
 	})
+
+	// ginkgo -v -focus Setup ./ginkgo
 
 	Context("Setup and Teardown", func() { // same as Describe
 		var s string

@@ -10,6 +10,8 @@ import (
 	"github.com/onsi/gomega/types"
 )
 
+// ginkgo -focus Gomega ./ginkgo
+
 var _ = Describe("Gomega", func() {
 
 	It("has different notations", func() {
@@ -158,7 +160,7 @@ var _ = Describe("Gomega", func() {
 
 		It("eventually", func() {
 			Eventually(startSlowProcess(500 * time.Millisecond)).Should(BeTrue())
-			// Eventually(startSlowProcess(3 * time.Second)).Should(BeTrue()) // Will fail
+			// Eventually(startSlowProcess(3 * time.Second)).Should(BeTrue()) // Will timeout
 			Eventually(
 				startSlowProcess(3*time.Second),
 				5*time.Second,
@@ -176,11 +178,7 @@ var _ = Describe("Gomega", func() {
 		})
 
 		It("works nice with channels", func() {
-			ch := make(chan struct{})
-			time.AfterFunc(800*time.Millisecond, func() {
-				ch <- struct{}{}
-			})
-
+			ch := time.After(800 * time.Millisecond)
 			Eventually(ch).Should(Receive())
 		})
 	})
@@ -252,9 +250,9 @@ var _ = Describe("Gomega", func() {
 	})
 })
 
-func BeInRange(a, b interface{}) types.GomegaMatcher {
+func BeInRange(from, to interface{}) types.GomegaMatcher {
 	return And(
-		BeNumerically(">", a),
-		BeNumerically("<", b),
+		BeNumerically(">", from),
+		BeNumerically("<", to),
 	)
 }

@@ -15,7 +15,8 @@ testing framework and it's accompanying assertion library [Gomega](http://onsi.g
     * `Expect` and `Ω` notations
     * Annotations
     * Matchers
-        * Error checking and panics
+        * Error checking
+        * Panic
         * Equivalence
         * Numbers
         * Other types
