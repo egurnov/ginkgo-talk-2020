@@ -2,7 +2,7 @@
 
 ## About the author
 I'm Alexander Egurnov, Senior Software Engineer at PubNative.
-I've been coding in Go since March 2015.
+I've been coding in Go since March 2016.
 
 ## About this repo
 This is an introduction and a live demo of my favorite features of [Ginkgo](https://onsi.github.io/ginkgo/)
