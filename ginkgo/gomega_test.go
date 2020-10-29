@@ -96,8 +96,8 @@ var _ = Describe("Gomega", func() {
 	It("is good at comparing numbers", func() {
 		Expect(5).To(BeNumerically("<", 5.1))         // Supports ==, ~, >, >=, <, <=
 		Expect(5).To(BeNumerically("~", 5.005, 1e-2)) // Comparison with a threshold
-		d1 := time.Date(2020, time.February, 5, 19, 30, 0, 0, time.UTC)
-		d2 := time.Date(2020, time.February, 5, 19, 34, 0, 0, time.UTC)
+		d1 := time.Date(2020, time.October, 29, 19, 30, 0, 0, time.UTC)
+		d2 := time.Date(2020, time.October, 29, 19, 34, 0, 0, time.UTC)
 		Expect(d1).To(BeTemporally("~", d2, 5*time.Minute))
 	})
 
