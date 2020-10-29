@@ -234,11 +234,11 @@ var _ = Describe("Gomega", func() {
 		})
 
 		It("can create custom matchers", func() {
-			withName := func(id string) types.GomegaMatcher {
-				return WithTransform(getName, Equal("a"))
+			withName := func(name string) types.GomegaMatcher {
+				return WithTransform(getName, Equal(name))
 			}
 			withID := func(id string) types.GomegaMatcher {
-				return WithTransform(getID, Equal("3"))
+				return WithTransform(getID, Equal(id))
 			}
 
 			arr := []T{{"a", "1"}, {"b", "1"}, {"c", "3"}}
