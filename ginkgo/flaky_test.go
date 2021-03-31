@@ -12,7 +12,7 @@ import (
 
 // --flakeAttempts=ATTEMPTS
 
-var _ = XDescribe("Flaky", func() {
+var _ = Describe("Flaky", func() {
 	It("fails sometimes", func() {
 		rand.Seed(time.Now().UnixNano())
 		Expect(rand.Intn(100)).ToNot(BeNumerically("==", 42))
